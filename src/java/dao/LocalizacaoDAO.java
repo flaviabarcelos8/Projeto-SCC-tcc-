@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Localizacao;
 
 /**
@@ -16,6 +17,8 @@ public class LocalizacaoDAO extends GenericDAO<Localizacao, Long>{
     public LocalizacaoDAO(){
         super(Localizacao.class);
     }
-    
+     public List<Localizacao> listar(String filtro) {
+        return em.createNamedQuery("Localizacao.findFilter").setParameter("filtro","%" + filtro.toUpperCase() + "%").getResultList();
+    }
     
 }

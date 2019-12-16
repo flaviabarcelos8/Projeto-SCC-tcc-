@@ -55,19 +55,25 @@ public class PropostaWS extends HttpServlet {
                 obj = dao.buscarPorChavePrimaria(Long.parseLong(id));
                 Boolean deucerto = dao.excluir(obj);
                 if(deucerto){   
-                    request.setAttribute("lista", this.listaTopicos());
-                    request.setAttribute("lista", this.listaCandidatos());
+                    request.setAttribute("lista", this.listaPropostas());
+                 
+                    
                     request.setAttribute("msg", "Excluído com sucesso");
                 }
                 else{
                     request.setAttribute("msg", "Erro ao excluir");
                 }
+                
                 break;
             case "edit":
                 id = request.getParameter("id");
                 dao = new PropostaDAO();
                 Proposta obj = dao.buscarPorChavePrimaria(Long.parseLong(id));
                 request.setAttribute("obj", obj);
+                
+                request.setAttribute("candidato", this.listaCandidatos());
+                request.setAttribute("topico", this.listaTopicos());
+                
                 pagina = "edita.jsp";
                 break;
             case "listPropostas":
@@ -122,9 +128,11 @@ public class PropostaWS extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String msg;
+        
             //verificar campos obrigatórios
              TopicoDAO tdao = new TopicoDAO();
             CandidatoDAO cdao = new CandidatoDAO();
+              request.setCharacterEncoding("UTF-8");
             PropostaDAO dao;
             Topico topico;
             Candidato nome;
@@ -154,6 +162,7 @@ public class PropostaWS extends HttpServlet {
                 
                 //se veio com a chave primaria então tem q alterar
                 if(request.getParameter("txtId")!= null){
+                   
                     obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
                     obj.setSolucao(solucao);
                     obj.setFonte(fonte);
@@ -164,6 +173,7 @@ public class PropostaWS extends HttpServlet {
                     pagina="edita.jsp";
                 }
                 else{
+                   
                     obj.setSolucao(solucao);
                     obj.setFonte(fonte);
                     obj.setTopico(topico);
@@ -183,6 +193,9 @@ public class PropostaWS extends HttpServlet {
             RequestDispatcher destino = request.getRequestDispatcher(pagina);
             destino.forward(request, response);
     }
+    
+    
+    
   private List<Topico> listaTopicos() {
         TopicoDAO dao = new TopicoDAO();
         List<Topico> topicos = dao.listar();

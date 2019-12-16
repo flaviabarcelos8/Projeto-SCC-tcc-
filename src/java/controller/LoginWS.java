@@ -6,9 +6,13 @@
 package controller;
 
 import dao.AdminDAO;
+import dao.CargoDAO;
+import dao.LocalizacaoDAO;
+import dao.PartidoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -18,6 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Admin;
+import model.Cargo;
+import model.Localizacao;
+import model.Partido;
 import util.Criptografia;
 
 /**

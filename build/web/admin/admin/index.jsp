@@ -42,12 +42,12 @@
                         <td>${obj.email}</td>
                         <td>${obj.senha}</td>
                         <td>
-                          <a class="btn btn-info btn-fab btn-icon btn-round" href="AdminWS?acao=edit&id=${obj.id}">
-                                        <i class="nc-icon tim-icons icon-pencil"></i>
+                          <a class="btn btn-primary" href="AdminWS?acao=edit&id=${obj.id}" role="button">Editar
+                                       
                              </a>
                         </td>
-                        <td><a class="btn btn-info btn-fab btn-icon btn-round" href="AdminWS?acao=del&id=${obj.id}">
-                                        <i class=" nc-icon tim-icons icon-remove"></i>
+                        <td><a class="btn btn-primary" href="AdminWS?acao=del&id=${obj.id}" role="button">Excluir
+                                       
                              </a>
                         </td>
                       </tr>

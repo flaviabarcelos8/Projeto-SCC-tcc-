@@ -21,8 +21,8 @@
                       <div class="form-group">
                         <label>Topico</label>
                         <select class="form-control" name="txtTopico">
-                             <c:forEach items="${topico}" var="objTopico">
-                                <option value="${objTopico.id}" ${obj.topico.equals(objTopico)?'selected':''}> ${objTopico.topico}</option>
+                            <c:forEach items="${topico}" var="obj">
+                                <option value="${obj.id}">${obj.topico}</option>
                             </c:forEach>
                         </select> 
                     </div>
@@ -30,9 +30,9 @@
                       <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label>Candidato</label>
-                        <select class="form-control" name="txtNome">
-                             <c:forEach items="${candidato}" var="objCandidato">
-                                <option value="${objCandidato.id}" ${obj.nome.equals(objCandidato)?'selected':''}> ${objCandidato.nome}</option>
+                         <select class="form-control" name="txtNome">
+                            <c:forEach items="${candidato}" var="obj">
+                                <option value="${obj.id}">${obj.nome}</option>
                             </c:forEach>
                         </select> 
                     </div>

@@ -9,6 +9,7 @@ import dao.CandidatoDAO;
 import dao.CargoDAO;
 import dao.LocalizacaoDAO;
 import dao.PartidoDAO;
+import dao.PropostaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -30,12 +31,13 @@ import model.Proposta;
  *
  * @author flavi
  */
-@WebServlet(name = "CandidatoWS", urlPatterns = {"/admin/candidato/CandidatoWS"})
+@WebServlet(name = "CandidatoWS", urlPatterns = {"/admin/candidato/CandidatoWS", "/public/CandidatoWS"})
 public class CandidatoWS extends HttpServlet {
 
     private Candidato obj;
     private String pagina;
     private String acao;
+    List<Proposta> lista;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,11 +47,12 @@ public class CandidatoWS extends HttpServlet {
         String id;
         CandidatoDAO dao;
         switch (String.valueOf(acao)) {
-            
+
             case "add":
                 request.setAttribute("partido", this.listaPartido());
                 request.setAttribute("cargo", this.listaCargo());
                 request.setAttribute("localizacao", this.listaLocalizacao());
+
                 pagina = "add.jsp";
                 break;
             case "del":
@@ -70,18 +73,25 @@ public class CandidatoWS extends HttpServlet {
                 dao = new CandidatoDAO();
                 Candidato obj = dao.buscarPorChavePrimaria(Long.parseLong(id));
                 request.setAttribute("obj", obj);
+
+                request.setAttribute("partido", this.listaPartido());
+                request.setAttribute("localizacao", this.listaLocalizacao());
+                request.setAttribute("cargo", this.listaCargo());
                 pagina = "edita.jsp";
                 break;
-            case "detalhe":
+            case "candidato":
                 dao = new CandidatoDAO();
-                Candidato nome = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("id")));
-                request.setAttribute("obj", nome);
+                Candidato candidato = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("id")));
+                request.setAttribute("obj", candidato);
                 request.setAttribute("partido", this.listaPartido());
                 request.setAttribute("cargo", this.listaCargo());
                 request.setAttribute("localizacao", this.listaLocalizacao());
+                request.setAttribute("cargos", this.listarCargos());
+                request.setAttribute("partidos", this.listaPartidos());
 
-                pagina = "detalhe.jsp";
+                pagina = "candidato.jsp";
                 break;
+
             case "listCandidatos":
                 request.setAttribute("partido", this.listaPartido());
                 request.setAttribute("cargo", this.listaCargo());
@@ -111,6 +121,13 @@ public class CandidatoWS extends HttpServlet {
                 }
                 request.setAttribute("lista", lista);
                 pagina = "index.jsp";
+                break;
+            case "filter":
+                pagina = "index.jsp";
+                //pega a informação digitada pelo livro
+                String filtro = request.getParameter("txtFiltro");
+                List<Candidato> lista2 = this.listar(filtro);
+                request.setAttribute("lista", lista2);
                 break;
             default:
                 dao = new CandidatoDAO();
@@ -142,18 +159,19 @@ public class CandidatoWS extends HttpServlet {
         PartidoDAO pdao = new PartidoDAO();
         LocalizacaoDAO ldao = new LocalizacaoDAO();
         CandidatoDAO dao;
-        
+        request.setCharacterEncoding("UTF-8");
         Long id_cargo = Long.parseLong(request.getParameter("txtCargo"));
         Long id_localizacao = Long.parseLong(request.getParameter("txtLocalizacao"));
         Long id_partido = Long.parseLong(request.getParameter("txtPartido"));
-        
+
         String nome = request.getParameter("txtNome");
         int idade = Integer.parseInt(request.getParameter("txtIdade"));
         int numcandidato = Integer.parseInt(request.getParameter("txtNum"));
         String biocandidato = request.getParameter("txtBio");
         String fotocandidato = request.getParameter("txtFoto");
         String planospdf = request.getParameter("txtPDF");
-        
+        String twitter = request.getParameter("txtTwitter");
+        String facebook = request.getParameter("txtFacebook");
         Cargo cargo;
         Partido partido;
         Localizacao localizacao;
@@ -176,7 +194,9 @@ public class CandidatoWS extends HttpServlet {
             //se veio com a chave primaria então tem q alterar
             if (request.getParameter("txtId") != null) {
                 obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
-                obj.setNome(request.getParameter(nome));
+                obj.setNome(nome);
+                obj.setTwitter(twitter);
+                obj.setFacebook(facebook);
                 obj.setIdade(idade);
                 obj.setNumcandidato(numcandidato);
                 obj.setBiocandidato(biocandidato);
@@ -189,6 +209,8 @@ public class CandidatoWS extends HttpServlet {
                 pagina = "edita.jsp";
             } else {
                 obj.setNome(nome);
+                obj.setTwitter(twitter);
+                obj.setFacebook(facebook);
                 obj.setIdade(idade);
                 obj.setNumcandidato(numcandidato);
                 obj.setBiocandidato(biocandidato);
@@ -226,6 +248,13 @@ public class CandidatoWS extends HttpServlet {
         return partidos;
     }
 
+    private List<Partido> listaPartidos() {
+        PartidoDAO dao = new PartidoDAO();
+        List<Partido> partidos = dao.listar();
+        dao.fecharConexao();
+        return partidos;
+    }
+
     private List<Cargo> listaCargo() {
         CargoDAO dao = new CargoDAO();
         List<Cargo> cargos = dao.listar();
@@ -238,6 +267,22 @@ public class CandidatoWS extends HttpServlet {
         List<Localizacao> localizacao = dao.listar();
         dao.fecharConexao();
         return localizacao;
+    }
+
+    public List<Cargo> listarCargos() {
+        CargoDAO dao = new CargoDAO();
+        List<Cargo> lista = dao.listar();
+        dao.fecharConexao();
+        return lista;
+
+    }
+
+    public List<Candidato> listar(String filtro) {
+        List<Candidato> lista;
+        CandidatoDAO dao = new CandidatoDAO();
+        lista = dao.listar(filtro);
+        dao.fecharConexao();
+        return lista;
     }
 
     private Candidato buscaPorPK(Long id) {

@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Cargo;
 
 
@@ -17,5 +18,8 @@ public class CargoDAO extends GenericDAO<Cargo, Long>{
     public CargoDAO(){
         super(Cargo.class);
     }
-    
+    @Override
+     public List<Cargo> listar(String filtro) {
+        return em.createNamedQuery("Cargo.findFilter").setParameter("filtro","%" + filtro.toUpperCase() + "%").getResultList();
+    }
 }

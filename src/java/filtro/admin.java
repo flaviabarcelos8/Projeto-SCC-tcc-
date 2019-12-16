@@ -36,7 +36,7 @@ public class admin implements Filter {
            // request.setAttribute("msg","Você não está logado no sistema!");
            //a linha abaixo deve ser comentada caso queira fazer o cadastro do 
            //admin e o filtro deixar passar
-            ((HttpServletResponse)response).sendRedirect("../login/login.jsp");
+         ((HttpServletResponse)response).sendRedirect("../login/login.jsp");
         }
         
     }

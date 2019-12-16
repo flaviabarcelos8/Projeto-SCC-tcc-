@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Partido;
 
 /**
@@ -16,5 +17,8 @@ public class PartidoDAO extends GenericDAO<Partido, Long>{
     public PartidoDAO(){
         super(Partido.class);
     }
-    
+    @Override
+     public List<Partido> listar(String filtro) {
+        return em.createNamedQuery("Partido.findFilter").setParameter("filtro","%" + filtro.toUpperCase() + "%").getResultList();
+    }
 }

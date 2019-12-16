@@ -12,6 +12,16 @@
                 <form action="UploadWS" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="urldestino" value="CandidatoWS">
                   <div class="row">
+                     <div class="col-md-5 pr-1">
+                      <div class="form-group">
+                          <label for="file">Foto</label>
+                       <div class="custom-file">
+                            
+                            <input type="file" name="txtFoto" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Escolher foto</label>
+                        </div>
+                      </div>
+                    </div>
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label>Nome e Sobrenome:</label>
@@ -33,20 +43,18 @@
                       <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label>Biografia:</label>
-                        <input type="text" name="txtBio" required class="form-control" placeholder="" >
+                        <textarea type="text" name="txtBio" required class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder=""> </textarea>
                       </div>
                     </div>
-                      <div class="col-md-5 pr-1">
-                      <div class="form-group">
-                       <label for="file">Foto</label>
-                        <input type="file" name="txtFoto" required class="form-control form-control-file" placeholder="">
-                      </div>
-                    </div>
+                      
                       <div class="col-md-5 pr-1">
                       <div class="form-group">
                        <div class="form-group">
                        <label for="file">Planos PDF</label>
-                        <input type="file" name="txtPDF" required class="form-control form-control-file"placeholder="">
+                       <div class="custom-file">
+                            <input type="file" name="txtPDF" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Escolher arquivo</label>
+                        </div>
                       </div>
                       </div>
                     </div>
@@ -78,6 +86,18 @@
                                 <option value="${obj.id}">${obj.localizacao}</option>
                             </c:forEach>
                         </select> 
+                      </div>
+                    </div>
+                      <div class="col-md-5 pr-1">
+                      <div class="form-group">
+                        <label>Link do Twitter:</label>
+                        <input type="text" name="txtTwitter" required class="form-control" placeholder="" >
+                      </div>
+                    </div>
+                      <div class="col-md-5 pr-1">
+                      <div class="form-group">
+                        <label>Link do Facebook:</label>
+                        <input type="text" name="txtFacebook" required class="form-control" placeholder="" >
                       </div>
                     </div>
                   </div>

@@ -21,7 +21,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Proposta.findAll", query = "SELECT i FROM Proposta i"),
-    @NamedQuery(name = "Proposta.findFilter", query = "SELECT i FROM Proposta i WHERE i.topico like :filtro")
+    @NamedQuery(name = "Proposta.findFilter", query = "SELECT i FROM Proposta i WHERE i.topico like :filtro"),
+    @NamedQuery(name="Proposta.findByCandidato", query="SELECT i FROM Proposta i WHERE i.candidato like :filtro")
 })
 public class Proposta implements Serializable {
 

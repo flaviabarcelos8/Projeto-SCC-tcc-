@@ -5,7 +5,9 @@
  */
 package controller;
 
+import dao.CargoDAO;
 import dao.LocalizacaoDAO;
+import dao.PartidoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -17,7 +19,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Cargo;
 import model.Localizacao;
+import model.Partido;
 
 /**
  *
@@ -75,6 +79,15 @@ public class LocalizacaoWS extends HttpServlet {
                 request.setAttribute("obj", obj);
                 pagina = "edita.jsp";
                 break;
+                
+                 case "filter":
+                pagina = "index.jsp";
+                //pega a informação digitada pelo livro
+                String filtro = request.getParameter("txtFiltro");
+                List<Localizacao> lista2 = this.listar(filtro);
+                request.setAttribute("lista", lista2);
+                break;
+                
             default:
                 dao = new LocalizacaoDAO();
                 if (request.getParameter("filtro") != null) {
@@ -96,6 +109,14 @@ public class LocalizacaoWS extends HttpServlet {
         RequestDispatcher destino = request.getRequestDispatcher(pagina);
         destino.forward(request, response);
     }
+    
+     public List<Localizacao> listar(String filtro) {
+        List<Localizacao> lista;
+        LocalizacaoDAO dao = new LocalizacaoDAO();
+        lista = dao.listar(filtro);
+        dao.fecharConexao();
+        return lista;
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -114,12 +135,14 @@ public class LocalizacaoWS extends HttpServlet {
                 
                 //se veio com a chave primaria então tem q alterar
                 if(request.getParameter("txtId")!= null){
+                    request.setCharacterEncoding("UTF-8");
                     obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
                     obj.setLocalizacao(request.getParameter("txtLocalizacao"));
                     deucerto = dao.alterar(obj);
                     pagina="edita.jsp";
                 }
                 else{
+                    request.setCharacterEncoding("UTF-8");
                     obj.setLocalizacao(request.getParameter("txtLocalizacao"));
                     deucerto = dao.incluir(obj);
                     pagina="add.jsp";   
@@ -142,6 +165,26 @@ public class LocalizacaoWS extends HttpServlet {
      *
      * @return a String containing servlet description
      */
+     private List<Partido> listaPartido() {
+        PartidoDAO dao = new PartidoDAO();
+        List<Partido> partidos = dao.listar();
+        dao.fecharConexao();
+        return partidos;
+    }
+
+    private List<Cargo> listaCargo() {
+        CargoDAO dao = new CargoDAO();
+        List<Cargo> cargos = dao.listar();
+        dao.fecharConexao();
+        return cargos;
+    }
+
+    private List<Localizacao> listaLocalizacao() {
+        LocalizacaoDAO dao = new LocalizacaoDAO();
+        List<Localizacao> localizacao = dao.listar();
+        dao.fecharConexao();
+        return localizacao;
+    }
     @Override
     public String getServletInfo() {
         return "Short description";

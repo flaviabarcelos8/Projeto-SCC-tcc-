@@ -31,6 +31,11 @@ public class Partido implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String partido;
+    private String bio;
+    private String fotopartido;
+    private String favoravel;
+    private String infoadicional;
+    private String numpartido;
      @OneToMany(mappedBy = "partido")
     private List<Candidato> candidatos;
 
@@ -48,6 +53,45 @@ public class Partido implements Serializable {
 
     public void setPartido(String partido) {
         this.partido = partido;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getFotopartido() {
+        return fotopartido;
+    }
+
+    public void setFotopartido(String fotopartido) {
+        this.fotopartido = fotopartido;
+    }
+
+    public String getFavoravel() {
+        return favoravel;
+    }
+
+    public void setFavoravel(String favoravel) {
+        this.favoravel = favoravel;
+    }
+    public String getInfoadicional() {
+        return infoadicional;
+    }
+
+    public void setInfoadicional(String infoadicional) {
+        this.infoadicional = infoadicional;
+    }
+
+    public String getNumpartido() {
+        return numpartido;
+    }
+
+    public void setNumpartido(String numpartido) {
+        this.numpartido = numpartido;
     }
 
     public List<Candidato> getCandidatos() {

@@ -2,6 +2,17 @@
 <%@include file="../cabecalho.jsp" %>
 
 <div class="content">
+    <form action="CargoWS" method="get" class="form-horizontal">
+              <div class="input-group no-border">
+                <input name="txtFiltro" type="text" class="form-control" placeholder="Pesquise...">
+                 <input type="hidden" name="acao" value="filter"/>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -34,12 +45,12 @@
                         <td>${obj.id}</td>
                         <td>${obj.cargo}</td>
                         <td>
-                          <a class="btn btn-info btn-fab btn-icon btn-round" href="CargoWS?acao=edit&id=${obj.id}">
-                                        <i class="nc-icon tim-icons icon-pencil"></i>
+                          <a class="btn btn-primary" href="CargoWS?acao=edit&id=${obj.id}" role="button">Editar
+                                      
                              </a>
                         </td>
-                        <td><a class="btn btn-info btn-fab btn-icon btn-round" href="CargoWS?acao=del&id=${obj.id}">
-                                        <i class=" nc-icon tim-icons icon-remove"></i>
+                        <td><a class="btn btn-primary" href="CargoWS?acao=del&id=${obj.id}" role="button">Excluir
+                                        
                              </a>
                         </td>
                       </tr>

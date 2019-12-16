@@ -2,6 +2,17 @@
 <%@include file="../cabecalho.jsp" %>
 
 <div class="content">
+    <form action="CandidatoWS" method="get" class="form-horizontal">
+              <div class="input-group no-border">
+                <input name="txtFiltro" type="text" class="form-control" placeholder="Pesquise...">
+                 <input type="hidden" name="acao" value="filter"/>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -12,6 +23,7 @@
                   <a class="btn btn-primary btn-round text-center" href="CandidatoWS?acao=add">
                         <i class="tim-icons icon-simple-add"></i> Cadastro
                     </a>
+                  
                 <div class="table-responsive">
                        <table class="table tablesorter " id="">
                     <thead class=" text-primary">
@@ -22,9 +34,6 @@
                         Candidato
                       </th>
                       <th>
-                        Idade
-                      </th>
-                      <th>
                         N° Candidato
                       </th>
                       <th>
@@ -32,9 +41,6 @@
                       </th>
                       <th>
                         Cargo
-                      </th>
-                      <th>
-                        Localização
                       </th>
                       <th>
                         Foto
@@ -51,19 +57,18 @@
                       <tr>
                         <td>${obj.id}</td>
                         <td>${obj.nome}</td>
-                        <td>${obj.idade}</td> 
                         <td>${obj.numcandidato}</td>
                         <td>${obj.partido.partido}</td>
-                        <<td>${obj.cargo.cargo}</td>
-                        <td>${obj.localizacao.localizacao}</td>
+                        <td>${obj.cargo.cargo}</td>
                         <td><img src="../../arquivos/${obj.fotocandidato}" height="42" width="42"></td>
                         <td>
-                          <a class="btn btn-info btn-fab btn-icon btn-round" href="CandidatoWS?acao=edit&id=${obj.id}">
-                                        <i class="nc-icon tim-icons icon-pencil"></i>
+                            
+                          <a class="btn btn-primary" href="CandidatoWS?acao=edit&id=${obj.id}" role="button">Editar
+                                       
                              </a>
                         </td>
-                        <td><a class="btn btn-info btn-fab btn-icon btn-round" href="CandidatoWS?acao=del&id=${obj.id}">
-                                        <i class=" nc-icon tim-icons icon-remove"></i>
+                        <td><a class="btn btn-primary" href="CandidatoWS?acao=del&id=${obj.id}" role="button">Excluir
+                                       
                              </a>
                         </td>
                       </tr>

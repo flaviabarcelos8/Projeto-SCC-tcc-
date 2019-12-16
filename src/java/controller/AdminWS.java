@@ -27,37 +27,37 @@ import util.Criptografia;
  */
 @WebServlet(name = "AdminWS", urlPatterns = {"/admin/admin/AdminWS"})
 public class AdminWS extends HttpServlet {
+
     private AdminDAO dao;
     private Admin obj;
     private String pagina;
-    private String acao;
    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        acao = request.getParameter("acao");
+
+        String acao = request.getParameter("acao");
         List<Admin> lista = null;
         String id;
-        switch(String.valueOf(acao)){
+        switch (String.valueOf(acao)) {
             case "del":
                 id = request.getParameter("id");
                 dao = new AdminDAO();
                 pagina = "index.jsp";
                 obj = dao.buscarPorChavePrimaria(Long.parseLong(id));
-                Admin adm_sessao = (Admin)request.getSession().getAttribute("admin");
-                if(adm_sessao.getId()==Long.parseLong(id)){
+                Admin adm_sessao = (Admin) request.getSession().getAttribute("admin");
+                if (adm_sessao.getId() == Long.parseLong(id)) {
                     lista = dao.listar();
                     request.setAttribute("lista", lista);
                     request.setAttribute("msg", "Você não pode excluir o Admin que esta logado.");
-                }else{
+                } else {
                     Boolean deucerto = dao.excluir(obj);
-                    if(deucerto){   
+                    if (deucerto) {
                         lista = dao.listar();
                         request.setAttribute("lista", lista);
                         request.setAttribute("msg", "Excluído com sucesso");
-                    }
-                    else{
+                    } else {
                         request.setAttribute("msg", "Erro ao excluir");
                     }
                 }
@@ -70,9 +70,12 @@ public class AdminWS extends HttpServlet {
                 pagina = "edita.jsp";
                 break;
             case "sair":
-                request.getSession().setAttribute("admin",new Admin());
+
+                request.getSession().invalidate();
                 request.setAttribute("msg", "Você se deslogou com sucesso!");
-                pagina = "../login/login.jsp";
+
+                ((HttpServletResponse) response).sendRedirect("../login/login.jsp");
+
                 break;
             default:
                 dao = new AdminDAO();
@@ -90,66 +93,64 @@ public class AdminWS extends HttpServlet {
                 //passar a listagem para a página
                 request.setAttribute("lista", lista);
                 break;
-                
+
         }
-        RequestDispatcher destino = request.getRequestDispatcher(pagina);
-        destino.forward(request, response);
+        if (acao !=null && !acao.equals("sair")) {
+            RequestDispatcher destino = request.getRequestDispatcher(pagina);
+            destino.forward(request, response);
+        }
     }
 
-   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         String msg;
-            request.setCharacterEncoding("UTF-8");
-            //verificar campos obrigatórios
-            if(request.getParameter("txtAdmin") == null){
-                msg = "Campos obrigatórios não informados";
+        String msg;
+        request.setCharacterEncoding("UTF-8");
+        //verificar campos obrigatórios
+        if (request.getParameter("txtAdmin") == null) {
+            msg = "Campos obrigatórios não informados";
+        } else {
+            dao = new AdminDAO();
+            obj = new Admin();
+            //preencho o objeto com o que vem do post
+
+            Boolean deucerto;
+
+            //se veio com a chave primaria então tem q alterar
+            if (request.getParameter("txtId") != null) {
+                obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
+                obj.setAdmin(request.getParameter("txtAdmin"));
+                obj.setEmail(request.getParameter("txtEmail"));
+                try {
+                    obj.setSenha(Criptografia.convertPasswordToMD5(request.getParameter("txtSenha")));
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(AdminWS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                deucerto = dao.alterar(obj);
+                pagina = "edita.jsp";
+            } else {
+                obj.setAdmin(request.getParameter("txtAdmin"));
+                obj.setEmail(request.getParameter("txtEmail"));
+                try {
+                    String criptografia = Criptografia.convertPasswordToMD5(request.getParameter("txtSenha"));
+                    obj.setSenha(criptografia);
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(AdminWS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                deucerto = dao.incluir(obj);
+                pagina = "add.jsp";
             }
-            else{
-                dao = new AdminDAO();
-                obj = new Admin();
-                //preencho o objeto com o que vem do post
-                
-                Boolean deucerto;
-                
-                //se veio com a chave primaria então tem q alterar
-                if(request.getParameter("txtId")!= null){
-                    obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
-                    obj.setAdmin(request.getParameter("txtAdmin"));
-                    obj.setEmail(request.getParameter("txtEmail"));
-                    try {
-                        obj.setSenha(Criptografia.convertPasswordToMD5(request.getParameter("txtSenha")));
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(AdminWS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    deucerto = dao.alterar(obj);
-                    pagina="edita.jsp";
-                }
-                else{
-                    obj.setAdmin(request.getParameter("txtAdmin"));
-                    obj.setEmail(request.getParameter("txtEmail"));
-                    try {
-                        String criptografia = Criptografia.convertPasswordToMD5(request.getParameter("txtSenha"));
-                        obj.setSenha(criptografia);
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(AdminWS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                   
-                    deucerto = dao.incluir(obj);
-                    pagina="add.jsp";   
-                }
-                if(deucerto){
-                    msg = "Operação realizada com sucesso";    
-                }
-                else{
-                    msg = "Erro ao realizar a operação";
-                }
+            if (deucerto) {
+                msg = "Operação realizada com sucesso";
+            } else {
+                msg = "Erro ao realizar a operação";
             }
-            dao.fecharConexao();
-            request.setAttribute("msg", msg);
-            RequestDispatcher destino = request.getRequestDispatcher(pagina);
-            destino.forward(request, response);
+        }
+        dao.fecharConexao();
+        request.setAttribute("msg", msg);
+        RequestDispatcher destino = request.getRequestDispatcher(pagina);
+        destino.forward(request, response);
     }
 
     /**

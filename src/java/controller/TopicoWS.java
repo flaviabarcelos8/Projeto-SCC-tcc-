@@ -114,6 +114,7 @@ public class TopicoWS extends HttpServlet {
                 
                 //se veio com a chave primaria então tem q alterar
                 if(request.getParameter("txtId")!= null){
+                    request.setCharacterEncoding("UTF-8");
                     obj = dao.buscarPorChavePrimaria(Long.parseLong(request.getParameter("txtId")));
                     obj.setTopico(request.getParameter("txtTopico"));
                     deucerto = dao.alterar(obj);

@@ -2,6 +2,17 @@
 <%@include file="../cabecalho.jsp" %>
 
 <div class="content">
+    <form action="PartidoWS" method="get" class="form-horizontal">
+              <div class="input-group no-border">
+                <input name="txtFiltro" type="text" class="form-control" placeholder="Pesquise...">
+                 <input type="hidden" name="acao" value="filter"/>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -22,6 +33,12 @@
                         Nome
                       </th>
                       <th>
+                        N° do Partido
+                      </th>
+                       <th>
+                        Foto
+                      </th>
+                      <th>
                         Edita
                       </th>
                       <th>
@@ -29,17 +46,19 @@
                       </th>
                     </thead>
                     <tbody>
-                        <c:forEach items="${lista}" var="obj">
+                        <c:forEach items="${lista}" var="objp">
                       <tr>
-                        <td>${obj.id}</td>
-                        <td>${obj.partido}</td>
+                        <td>${objp.id}</td>
+                        <td>${objp.partido}</td>
+                        <td>${objp.numpartido}</td>
+                        <td><img src="../../arquivos/${objp.fotopartido}" height="42" width="42"></td>
                         <td>
-                          <a class="btn btn-info btn-fab btn-icon btn-round" href="PartidoWS?acao=edit&id=${obj.id}">
-                                        <i class="nc-icon tim-icons icon-pencil"></i>
+                          <a class="btn btn-primary" href="PartidoWS?acao=edit&id=${objp.id}" role="button">Editar
+                                        
                              </a>
                         </td>
-                        <td><a class="btn btn-info btn-fab btn-icon btn-round" href="PartidoWS?acao=del&id=${obj.id}">
-                                        <i class="nc-icon tim-icons icon-remove"></i>
+                        <td><a class="btn btn-primary" href="PartidoWS?acao=del&id=${objp.id}" role="button">Excluir
+                                       
                              </a>
                         </td>
                       </tr>

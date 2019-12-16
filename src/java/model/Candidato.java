@@ -24,10 +24,12 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Candidato.findAll", query = "SELECT c FROM Candidato c"),
-   @NamedQuery(name = "Candidato.findFilter", query = "SELECT c FROM Candidato c WHERE c.nome like :filtro"),
-   
+    @NamedQuery(name = "Candidato.findFilter", query = "SELECT c FROM Candidato c WHERE c.nome like :filtro" )
 })
 public class Candidato implements Serializable {
+
+    @ManyToMany(mappedBy = "candidatos")
+    private List<Cola> colas;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,6 +42,8 @@ public class Candidato implements Serializable {
     private String biocandidato;
     private String fotocandidato;
     private String planospdf;
+    private String twitter;
+    private String facebook;
     @ManyToOne
     private Cargo cargo;
     @ManyToOne
@@ -49,8 +53,24 @@ public class Candidato implements Serializable {
     
     @OneToMany(mappedBy = "candidato")
     private List<Proposta> propostas;
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
     
-    
+   
 
     public Long getId() {
         return id;
@@ -140,8 +160,15 @@ public class Candidato implements Serializable {
         this.propostas = propostas;
     }
 
+    public List<Cola> getColas() {
+        return colas;
+    }
+
+    public void setColas(List<Cola> colas) {
+        this.colas = colas;
+    }
+
    
-    
 
     
     @Override

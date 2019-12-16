@@ -55,14 +55,7 @@
                                     <label>Password</label>
                                     <input class="au-input au-input--full" type="password" name="txtSenha" placeholder="Senha">
                                 </div>
-                                <div class="login-checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember">Me lembre
-                                    </label>
-                                    <label>
-                                        <a href="#">Recupera a senha</a>
-                                    </label>
-                                </div>
+                               
                                 <button class="au-btn au-btn--block au-btn--blue m-b-20" type="submit">Entrar</button>
                             </form>
                             <c:if test="${not empty msg}">
