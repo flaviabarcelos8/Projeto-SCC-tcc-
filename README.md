@@ -1,2 +1,2 @@
-# Projeto-SCC-tcc-
-Desenvolvimento do sistema web de cadastro de candidatos eleitorais.
+# Projeto Site de Candidatos Eleitorais
+ Desenvolvimento do sistema web de cadastro e exibição de candidatos eleitorais.
